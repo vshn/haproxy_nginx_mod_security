@@ -3,32 +3,32 @@ services:
     nginx:
         container_name: ${COMPOSE_PROJECT_NAME}_nginx
         build: ./nginx
-        volumes:
-            - ./nginx/mysite.template:/etc/nginx/conf.d/mysite.conf
         expose:
             - ${NGINX_EXPOSED_PORT}
         networks:
             public_net:
                 ipv4_address: ${NGINX_IP}
+        environment:
+            - HAPROXY_IP=${HAPROXY_IP}
+            - HAPROXY_PRIVATE_PORT=${HAPROXY_PRIVATE_PORT}
     haproxy:
         build: ./haproxy
-        expose:
-            - ${HAPROXY_EXPOSED_PORT}
         networks:
             public_net:
-                ipv4_address: ${HAPROXY_PUBLIC_IP}
+                ipv4_address: ${HAPROXY_IP}
         ports:
             - 80:80
         expose:
-            - 80
+            - ${HAPROXY_PUBLIC_PORT}
         networks:
             public_net:
-                ipv4_address: ${HAPROXY_PUBLIC_IP}
+                ipv4_address: ${HAPROXY_IP}
         environment:
             - NGINX_IP=${NGINX_IP}
             - NGINX_EXPOSED_PORT=${NGINX_EXPOSED_PORT}
-            - HAPROXY_PUBLIC_IP=${HAPROXY_PUBLIC_IP}
-            - HAPROXY_EXPOSED_PORT=${HAPROXY_EXPOSED_PORT}
+            - HAPROXY_IP=${HAPROXY_IP}
+            - HAPROXY_PUBLIC_PORT=${HAPROXY_PUBLIC_PORT}
+            - HAPROXY_PRIVATE_PORT=${HAPROXY_PRIVATE_PORT}
 networks:
     public_net:
         driver: bridge
