@@ -36,9 +36,6 @@ services:
             - 80:80
         expose:
             - ${HAPROXY_PUBLIC_PORT}
-        networks:
-            public_net:
-                ipv4_address: ${HAPROXY_IP}
         environment:
             - WEBAPP_PORT=${WEBAPP_PORT}
             - WEBAPP_IP=${WEBAPP_IP}
