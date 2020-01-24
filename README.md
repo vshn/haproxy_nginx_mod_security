@@ -17,11 +17,11 @@ docker-compose up
 ```
 
 ## Testing
-```sh
-curl http://192.168.0.33    # Get from the haproxy public ip
-curl http://192.168.0.11    # Get from the nginx waf ip
-```
 
+```sh
+curl http://192.168.0.33        # Get / content from the public HAProxy
+curl http://192.168.0.33/var    # Get /var , will be denied by a mod_proxy rule
+```
 
 ## Credits
 
