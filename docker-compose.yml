@@ -1,14 +1,30 @@
 version: '3'
 services:
+    webapp:
+        container_name: ${COMPOSE_PROJECT_NAME}_webapp
+        image: python
+        command: python -m http.server ${WEBAPP_PORT}
+        expose:
+            - ${WEBAPP_PORT}
+        networks:
+            public_net:
+                ipv4_address: ${WEBAPP_IP}
+        ports:
+            - ${WEBAPP_PORT}:${WEBAPP_PORT}
+        environment:
+            - HAPROXY_IP=${HAPROXY_IP}
+            - HAPROXY_PRIVATE_PORT=${HAPROXY_PRIVATE_PORT}
+
     nginx:
         container_name: ${COMPOSE_PROJECT_NAME}_nginx
         build: ./nginx
         expose:
-            - ${NGINX_EXPOSED_PORT}
+            - ${NGINX_PORT}
         networks:
             public_net:
                 ipv4_address: ${NGINX_IP}
         environment:
+            - NGINX_PORT=${NGINX_PORT}
             - HAPROXY_IP=${HAPROXY_IP}
             - HAPROXY_PRIVATE_PORT=${HAPROXY_PRIVATE_PORT}
     haproxy:
@@ -24,8 +40,10 @@ services:
             public_net:
                 ipv4_address: ${HAPROXY_IP}
         environment:
+            - WEBAPP_PORT=${WEBAPP_PORT}
+            - WEBAPP_IP=${WEBAPP_IP}
             - NGINX_IP=${NGINX_IP}
-            - NGINX_EXPOSED_PORT=${NGINX_EXPOSED_PORT}
+            - NGINX_PORT=${NGINX_PORT}
             - HAPROXY_IP=${HAPROXY_IP}
             - HAPROXY_PUBLIC_PORT=${HAPROXY_PUBLIC_PORT}
             - HAPROXY_PRIVATE_PORT=${HAPROXY_PRIVATE_PORT}
