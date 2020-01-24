@@ -10,11 +10,20 @@ These instructions will get you a copy of the project up and running on your loc
 
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Running the tests
+## Starting the web servers
 
 ```sh
 docker-compose up
 ```
+
+## Testing
+```sh
+curl http://192.168.0.33    # Get from the haproxy public ip
+curl http://192.168.0.11    # Get from the nginx waf ip
+```
+
+
+## Credits
 
 The configurations available on this repository where based in the following articles:
 
